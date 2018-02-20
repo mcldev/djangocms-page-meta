@@ -142,11 +142,12 @@ def get_page_meta(page, language):
 
 def get_metatags(request):
     language = get_language_from_request(request, check_path=True)
-    meta = get_page_meta(request.current_page, language)
-    return mark_safe(
-        render_to_string(
-            request=request,
-            template_name='djangocms_page_meta/meta.html',
-            context={'meta': meta}
+    if hasattr(request, 'current_page'):
+        meta = get_page_meta(request.current_page, language)
+        return mark_safe(
+            render_to_string(
+                request=request,
+                template_name='djangocms_page_meta/meta.html',
+                context={'meta': meta}
+            )
         )
-    )
